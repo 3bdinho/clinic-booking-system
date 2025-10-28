@@ -1,0 +1,11 @@
+1-Doctor availability calendar (visual time slot picker).
+
+2-Automated reminders (e.g., send reminder 24h before appointment).
+
+3-Patient reviews after appointment.
+
+4-Admin dashboard with charts & KPIs.
+
+5-Sync with Google Calendar using Google API.
+
+6-Payments integration (Stripe, PayPal).
