@@ -13,7 +13,7 @@ const userRoute = require("./routes/userRoute");
 const doctorRoute = require("./routes/doctorRoute");
 const patientRoute = require("./routes/patientRoutes");
 const appointmentRoute = require("./routes/appointmentRoutes");
-
+const { reminder } = require("./utils/reminderService");
 //Connect with database
 DBConnection();
 
@@ -28,6 +28,9 @@ if (process.env.NODE_ENV === "development") {
 
 //Middlewares
 app.use(express.json());
+
+//reminder
+reminder();
 
 //Route
 app.use("/api/v1/users", userRoute);

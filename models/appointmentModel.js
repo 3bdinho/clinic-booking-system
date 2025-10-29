@@ -25,8 +25,13 @@ const appointmentsSchema = mongoose.Schema(
       enum: ["pending", "confirmed", "cancelled"],
       default: "pending",
     },
+    reminderSent: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
-
+appointmentsSchema.index({ doctorId: 1 });
+appointmentsSchema.index({ patientId: 1 });
 module.exports = mongoose.model("Appointment", appointmentsSchema);
