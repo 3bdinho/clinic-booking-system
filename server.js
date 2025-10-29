@@ -13,6 +13,7 @@ const userRoute = require("./routes/userRoute");
 const doctorRoute = require("./routes/doctorRoute");
 const patientRoute = require("./routes/patientRoutes");
 const appointmentRoute = require("./routes/appointmentRoutes");
+const reviewRoute = require("./routes/reviewRoute");
 const { reminder } = require("./utils/reminderService");
 //Connect with database
 DBConnection();
@@ -38,6 +39,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/doctors", doctorRoute);
 app.use("/api/v1/patients", patientRoute);
 app.use("/api/v1/appointments", appointmentRoute);
+app.use("/api/v1/reviews", reviewRoute);
 // Global Error Handler
 app.use(globalErrorHandler);
 

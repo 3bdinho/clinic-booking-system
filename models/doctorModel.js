@@ -53,6 +53,16 @@ const doctorSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    reviewsAverage: {
+      type: Number,
+      default: 0,
+      min: [1, "Rating must be above 1.0"],
+      max: [5, "Rating must be below 5.0"],
+    },
+    reviewsQuantity: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
