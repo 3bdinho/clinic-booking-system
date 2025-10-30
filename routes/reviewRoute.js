@@ -1,4 +1,5 @@
 const express = require("express");
+const { doubleCsrfProtection } = require("../utils/csrf");
 
 const { protect, allowedTo } = require("../services/authService");
 const {
@@ -17,7 +18,13 @@ router.use(protect);
 
 router
   .route("/")
-  .post(allowedTo("patient"), createReviewValidator, createReview)
+
+  .post(
+    doubleCsrfProtection,
+    allowedTo("patient"),
+    createReviewValidator,
+    createReview
+  )
   .get(allowedTo("admin"), getAllReviews);
 
 router.get("/:doctorId", getDoctorReviewsValidator, getDoctorReviews);

@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Patient = require("../models/patientModel");
 const factory = require("../services/handlerFactory");
 const ApiError = require("../utils/apiError");
-
+const { sanitizePatient } = require("../utils/sanitizeData");
 // @desc    Filter patients (if needed)
 exports.createFilterObject = (req, res, next) => {
   req.filterObj = { isApproved: true };
@@ -24,7 +24,7 @@ exports.createPatient = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: patient,
+    data: sanitizePatient(patient),
   });
 });
 
@@ -62,7 +62,7 @@ exports.updatePatient = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: updatedPatient,
+    data: sanitizePatient(updatedPatient),
   });
 });
 

@@ -1,4 +1,5 @@
 const express = require("express");
+const { doubleCsrfProtection } = require("../utils/csrf");
 const router = express.Router();
 const { protect, allowedTo } = require("../services/authService");
 const {
@@ -19,12 +20,23 @@ const {
 router.use(protect);
 
 // Doctor cancels their own appointment
-router.patch("/:id/cancel", allowedTo("doctor"), cancelAppointment);
-router.patch("/:id/confirm", allowedTo("doctor"), confirmAppointment);
+router.patch(
+  "/:id/cancel",
+  doubleCsrfProtection,
+  allowedTo("doctor"),
+  cancelAppointment
+);
+router.patch(
+  "/:id/confirm",
+  doubleCsrfProtection,
+  allowedTo("doctor"),
+  confirmAppointment
+);
 
 // (Patient only)
 router.post(
   "/",
+  doubleCsrfProtection,
   allowedTo("patient"),
   createAppointmentValidator,
   createAppointment
@@ -34,12 +46,14 @@ router.get("/my", allowedTo("patient"), getMyAppointments);
 // (Patient or Admin)
 router.patch(
   "/:id",
+  doubleCsrfProtection,
   allowedTo("patient", "admin"),
   updateAppointmentValidator,
   updateAppointment
 );
 router.delete(
   "/:id",
+  doubleCsrfProtection,
   allowedTo("patient", "admin"),
   deleteAppointmentValidator,
   deleteAppointment
