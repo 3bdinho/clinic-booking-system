@@ -1,4 +1,5 @@
 const express = require("express");
+const { doubleCsrfProtection } = require("../utils/csrf");
 const {
   createDoctor,
   getAllDoctors,
@@ -28,15 +29,21 @@ router.get("/:id", createFilterObject, getDoctor);
 // 2)Protected Routes(admin)
 router.use(authService.protect);
 
-router.patch("/:id/approved", authService.allowedTo("admin"), approveDoctor);
+router.patch(
+  "/:id/approved",
+  doubleCsrfProtection,
+  authService.allowedTo("admin"),
+  approveDoctor
+);
 
 // 3)Protected Routes(admin / doctor)
 router.use(authService.allowedTo("admin", "doctor"));
 
-router.post("/", createDoctorValidator, createDoctor);
+router.post("/", doubleCsrfProtection, createDoctorValidator, createDoctor);
+
 router
   .route("/:id")
-  .patch(updateDoctorValidator, updateDoctor)
-  .delete(deleteDoctorValidator, deleteDoctor);
+  .patch(doubleCsrfProtection, updateDoctorValidator, updateDoctor)
+  .delete(doubleCsrfProtection, deleteDoctorValidator, deleteDoctor);
 
 module.exports = router;

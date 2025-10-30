@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { doubleCsrfProtection } = require("../utils/csrf");
 const {
   signupDoctor,
   signupPatient,
@@ -16,13 +16,28 @@ const {
 
 const router = express.Router();
 
-router.post("/signup/doctor", signupValidator, signupDoctor);
-router.post("/signup/patient", signupValidator, signupPatient);
+router.post(
+  "/signup/doctor",
+  doubleCsrfProtection,
+  signupValidator,
+  signupDoctor
+);
+router.post(
+  "/signup/patient",
+  doubleCsrfProtection,
+  signupValidator,
+  signupPatient
+);
 
-router.post("/login", loginValidator, login);
+router.post("/login", doubleCsrfProtection, loginValidator, login);
 
-router.post("/forgotPassword", forgotPassword);
-router.patch("/resetPassword/:token", resetPassword);
-router.patch("/updateMyPassword", protect, updatePassword);
+router.post("/forgotPassword", doubleCsrfProtection, forgotPassword);
+router.patch("/resetPassword/:token", doubleCsrfProtection, resetPassword);
+router.patch(
+  "/updateMyPassword",
+  doubleCsrfProtection,
+  protect,
+  updatePassword
+);
 
 module.exports = router;

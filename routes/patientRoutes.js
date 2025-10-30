@@ -1,4 +1,6 @@
 const express = require("express");
+const { doubleCsrfProtection } = require("../utils/csrf");
+
 const {
   createPatient,
   getAllPatients,
@@ -21,11 +23,18 @@ const router = express.Router();
 router.use(protect);
 
 // After signup/login
-router.post("/", allowedTo("patient"), createPatientValidator, createPatient);
+router.post(
+  "/",
+  doubleCsrfProtection,
+  allowedTo("patient"),
+  createPatientValidator,
+  createPatient
+);
 
 // Only patient himself can change his data
 router.patch(
   "/:id",
+  doubleCsrfProtection,
   allowedTo("patient"),
   updatePatientValidator,
   updatePatient
@@ -33,6 +42,7 @@ router.patch(
 
 router.delete(
   "/:id",
+  doubleCsrfProtection,
   allowedTo("patient", "admin"),
   deletePatientValidator,
   deletePatient

@@ -3,6 +3,7 @@ const Doctor = require("../models/doctorModel");
 const factory = require("../services/handlerFactory");
 const ApiError = require("../utils/apiError");
 const { sendEmail } = require("../utils/sendEmail");
+const { sanitizeDoctor } = require("../utils/sanitizeData");
 exports.createFilterObject = (req, res, next) => {
   req.filterObject = { isApproved: true };
 
@@ -23,7 +24,7 @@ exports.createDoctor = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: doctor,
+    data: sanitizeDoctor(doctor),
   });
 });
 
@@ -62,7 +63,7 @@ exports.updateDoctor = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: updatedDoctor,
+    data: sanitizeDoctor(updatedDoctor),
   });
 });
 
@@ -117,6 +118,6 @@ exports.approveDoctor = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     message: "Doctor approved successfully",
-    data: doctor,
+    data: sanitizeDoctor(doctor),
   });
 });

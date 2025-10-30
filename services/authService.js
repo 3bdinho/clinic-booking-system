@@ -6,6 +6,7 @@ const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const ApiError = require("../utils/apiError");
 const { sendEmail } = require("../utils/sendEmail");
+const { sanitizeUser } = require("../utils/sanitizeData");
 
 // Generate JWT Token
 const signToken = (userId) => {
@@ -13,6 +14,7 @@ const signToken = (userId) => {
     expiresIn: process.env.JWT_EXP,
   });
 };
+
 // Helper
 const createUserWithRole = asyncHandler(async (req, res, role) => {
   const { name, birthdate, sex, email, phone, password } = req.body;
@@ -34,10 +36,11 @@ const createUserWithRole = asyncHandler(async (req, res, role) => {
   res.status(201).json({
     status: "success",
     role,
-    data: userData,
+    data: sanitizeUser(userData),
     token,
   });
 });
+
 // @desc Signup doctor
 // @route POST /api/v1/auth/signup/patient
 // @access Public
@@ -71,7 +74,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   //Send res
   res.status(200).json({
     status: "success",
-    data: userData,
+    data: sanitizeUser(userData),
     token,
   });
 });
